@@ -4,8 +4,8 @@
 
 using namespace std;
 
-//1.²åÈëÅÅĞò
-//1£©Ö±½Ó²åÈë O(N^2)
+//1.æ’å…¥æ’åº
+//1ï¼‰ç›´æ¥æ’å…¥ O(N^2)
 void InsertSort(int *a, size_t n)
 {
 	assert(a);
@@ -20,7 +20,7 @@ void InsertSort(int *a, size_t n)
 		a[end+1] = tmp;
 	}
 }
-//2£©Ï£¶û  N^1.25---1.6*N^1.25
+//2ï¼‰å¸Œå°”  N^1.25---1.6*N^1.25
 void ShellSort(int *a, size_t n)
 {
 	assert(a);
@@ -42,30 +42,34 @@ void ShellSort(int *a, size_t n)
 	}
 }
 
-//2.Ñ¡ÔñÅÅĞò
-//1£©Ñ¡Ôñ  O(N^2)
+//2.é€‰æ‹©æ’åº
+//1ï¼‰é€‰æ‹©  O(N^2)
 void SelectSort(int *a, size_t n)
 {
 	assert(a);
 	size_t begin = 0;
 	size_t end = n-1;
-	size_t min=0, max=0;
+	size_t minIndex, maxIndex;
 	while (begin<end)
 	{
+		minIndex=begin;
+		maxIndex=end;
 		for (size_t i=begin; i <= end; ++i)
 		{
-			if (a[max] < a[i])
-				max = i;
-			if (a[min] > a[i])
-				min = i;
+			if (begin<end && a[maxIndex] < a[i])
+				maxIndex = i;
+			if (begin<end && a[minIndex] > a[i])
+				minIndex = i;
 		}
-		swap(a[min], a[begin]);
-		swap(a[max], a[end]);
+		swap(a[minIndex], a[begin]);
+		if(maxIndex==begin)
+			maxIndex=minIndex;
+		swap(a[maxIndex], a[end]);
 		begin++;
 		end--;
 	}
 }
-//2£©¶Ñ  O(NlogN)
+//2ï¼‰å †  O(NlogN)
 void _AdjustDown(int *a, size_t size, size_t parent)
 {
 	assert(a);
@@ -91,14 +95,14 @@ void _AdjustDown(int *a, size_t size, size_t parent)
 void HeapSort(int *a, size_t n)
 {
 	assert(a);
-	//½¨¶Ñ
+	//å»ºå †
 	size_t i = (n - 2) / 2;
 	for (; i > 0; i--)
 	{
 		_AdjustDown(a, n, i);
 	}
 	_AdjustDown(a, n, i);
-	//µ÷Õû
+	//è°ƒæ•´
 	size_t end= n - 1;
 	while (end>0)
 	{
@@ -109,8 +113,8 @@ void HeapSort(int *a, size_t n)
 }
 
 
-//3.½»»»ÅÅĞò
-//1£©Ã°Åİ           O(N^2)
+//3.äº¤æ¢æ’åº
+//1ï¼‰å†’æ³¡           O(N^2)
 void BubbleSort(int *a, size_t n)
 {
 	assert(a);
@@ -126,7 +130,7 @@ void BubbleSort(int *a, size_t n)
 	}
 
 }
-//2£©¿ìËÙ        O(N^2)
+//2ï¼‰å¿«é€Ÿ        O(N^2)
 void QuickSort(int *a, size_t begin,size_t end)
 {
 	assert(a);
@@ -138,13 +142,13 @@ void QuickSort(int *a, size_t begin,size_t end)
 	size_t right = end - 1;
 	while (left < right) 
 	{
-		//×ó¡úÓÒ£¬ÕÒ´ó
+		//å·¦â†’å³ï¼Œæ‰¾å¤§
 		while (left<right && a[left] <= key)
 			left++;
-		//ÓÒ¡ú×ó£¬ÕÒĞ¡
+		//å³â†’å·¦ï¼Œæ‰¾å°
 		while (left<right && a[right] > key)
 			right--;
-		//½»»»
+		//äº¤æ¢
 		if (left < right)
 			swap(a[left], a[right]);
 	}
@@ -155,7 +159,7 @@ void QuickSort(int *a, size_t begin,size_t end)
 	QuickSort(a, 0, left - 1);
 	QuickSort(a, left + 1, end);
 }
-void QuickSort1(int *a, size_t begin, size_t end)//cur¸ºÔğÕÒ±ÈkeyĞ¡µÄÊı£¬prevµÈ´ıcurÀ´½»»»
+void QuickSort1(int *a, size_t begin, size_t end)//curè´Ÿè´£æ‰¾æ¯”keyå°çš„æ•°ï¼Œprevç­‰å¾…curæ¥äº¤æ¢
 {
 	assert(a);
 	if (begin >= end)
@@ -168,7 +172,7 @@ void QuickSort1(int *a, size_t begin, size_t end)//cur¸ºÔğÕÒ±ÈkeyĞ¡µÄÊı£¬prevµÈ´
 		if (a[cur] < key)
 		{
 			++prev;
-			swap(a[prev], a[cur]);//1.prev==cur×ÔÉí½»»»  2.prevÓë>keyµÄÊı½»»»
+			swap(a[prev], a[cur]);//1.prev==curè‡ªèº«äº¤æ¢  2.prevä¸>keyçš„æ•°äº¤æ¢
 		}
 		++cur;
 	}
@@ -178,7 +182,7 @@ void QuickSort1(int *a, size_t begin, size_t end)//cur¸ºÔğÕÒ±ÈkeyĞ¡µÄÊı£¬prevµÈ´
 	QuickSort1(a, prev + 1, end);
 }
 
-//4.¹é²¢                O(NlogN)
+//4.å½’å¹¶                O(NlogN)
 void Merge(int src[],int dest[],size_t begin,size_t mid,size_t end)
 {
 	assert(src);
